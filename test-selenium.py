@@ -8,7 +8,8 @@ from time import sleep
 
 def main():
      # Accedemos a pagina ppal
-    libro="Ingenieria del software Pressman"
+    libro="Ingenieria del software"
+    autor="Pressman"
     try: 
         try:
             driver = webdriver.Chrome()
@@ -21,7 +22,6 @@ def main():
         try:
             element = wait.until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, "Ir al Catálogo")))
             driver.execute_script("arguments[0].click();", element)
-            sleep(3)
         except:
             print("La web de la biblioteca no responde")
 
@@ -30,9 +30,17 @@ def main():
             driver.switch_to.window(new_window)
             search_bar=driver.find_element(By.ID,"translControl1")
             search_bar.send_keys(libro)
-            returned_value = search_bar.get_attribute("value")
-            print(returned_value)
-            sleep(5)
+      
+            go = driver.find_element(By.ID,"searchsubmit")
+            go.click()
+            
+            confirm=driver.find_element(By.ID,"numresults")
+            confirm = confirm.text
+            print(confirm)
+            
+            book=driver.find_element(By.PARTIAL_LINK_TEXT, libro)
+            book = book.text
+            print(book)
             # search_bar.send_keys(Keys.RETURN)
 
         except Exception as e:
